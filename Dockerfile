@@ -16,8 +16,13 @@ RUN apk add nginx && mkdir /run/nginx/ &&\
 	mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
 
 ADD ./srcs/nginx/nginx.conf /etc/nginx/nginx.conf
+
 ADD ./srcs/nginx/index.html /www/index.html
 
-RUN nginx -t && nginx -g "daemon off ;"
+RUN nginx -t
+
+ADD ./srcs/nginx/script.sh /usr/bin/
 
 EXPOSE	443 80
+
+ENTRYPOINT /usr/bin/script.sh
