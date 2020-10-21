@@ -1,4 +1,4 @@
-FROM	php:7-fpm-alpine
+FROM	alpine
 
 RUN apk upgrade --available && apk add openrc --no-cache
 RUN apk add nginx && mkdir /run/nginx/ &&\
