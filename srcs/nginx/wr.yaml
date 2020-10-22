@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wr
+  labels:
+    app: wr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wr
+  template:
+    metadata:
+      labels:
+        app: wr
+    spec:
+      containers:
+      - name: wr
+        image: wr
+        ports:
+        - containerPort: 5000
+        imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wr
+spec:
+  selector:
+    app: wr
+  ports:
+    - protocol: TCP
+      name: http
+      port: 5000
+      targetPort: 5000
+  type: LoadBalancer
