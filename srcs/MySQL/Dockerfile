@@ -14,5 +14,10 @@
 # openrc default
 FROM alpine
 
-RUN apk upgrade --available && apk add openrc &&\
-    apk add mariadb mariadb-client
+RUN apk upgrade --available && apk add openrc
+RUN apk add mysql mysql-client
+RUN rc-status && touch /run/openrc/softlevel
+RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
+RUN rc-service mariadb start
+
+

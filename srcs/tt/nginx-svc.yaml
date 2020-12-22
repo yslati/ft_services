@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-depl
+  labels:
+    name: nginx-depl
+spec:
+  type: NodePort
+  selector:
+    name: nginx-depl
+  ports:
+  - port: 80
+    name: http
+    targetPort: 80
+    nodePort: 30080
+  # - port: 443
+    # name: https
+    # targetPort: 443
