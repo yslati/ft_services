@@ -1,8 +1,8 @@
 FROM alpine
 
 RUN apk upgrade --available && apk add openrc vsftpd openssl
-RUN adduser -D user
-RUN echo "user:pass1234" | chpasswd
+RUN adduser -D admin
+RUN echo "admin:admin" | chpasswd
 RUN yes "" | openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem 
 

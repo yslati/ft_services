@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      containers:
+      - name: wordpress
+        image: wordpress
+        ports:
+        - containerPort: 5000
+        imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+  annotations:
+    metallb.universe.tf/allow-shared-ip: shared
+spec:
+  selector:
+    app: wordpress
+  ports:
+    - protocol: TCP
+      name: wordpress
+      port: 5000
+      targetPort: 5000
+  type: LoadBalancer
