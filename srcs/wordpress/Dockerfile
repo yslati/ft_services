@@ -1,29 +1,38 @@
 FROM	alpine
 
-RUN apk upgrade --available && apk add openrc --no-cache
+RUN apk upgrade --available && apk add openrc
 RUN apk add nginx && mkdir /run/nginx/ &&\
 	adduser -D -g 'www' www &&\
-	mkdir /www && chown -R www:www /var/lib/nginx && chown -R www:www /www &&\
-	mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
-ADD ./nginx.conf /etc/nginx/nginx.conf
-ADD ./index.html /www/index.html
-RUN apk add openssl &&\
-	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt -subj "/CN=localhost"
-RUN nginx -t
-# RUN apk add php7-fpm php7-mcrypt php7-soap php7-openssl php7-gmp php7-pdo_odbc php7-json php7-dom php7-pdo php7-zip php7-mysqli php7-sqlite3 php7-apcu php7-pdo_pgsql php7-bcmath php7-gd php7-odbc php7-pdo_mysql php7-pdo_sqlite php7-gettext php7-xmlreader php7-xmlrpc php7-bz2 php7-iconv php7-pdo_dblib php7-curl php7-ctype
-# ADD ./php7.sh /etc/profile.d/php7.sh
+	mkdir /www && chown -R www:www /var/lib/nginx && chown -R www:www /www
+ADD ./src/nginx.conf /etc/nginx/nginx.conf
+ADD ./src/index.html /www/index.html
+RUN nginx -t && rc-update add nginx default
+
+RUN apk add mysql mysql-client
+#RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
+
+RUN apk add wget php7-common php7-fpm php7-opcache php7-session php7-mbstring php7-iconv php7-json php7-gd php7-curl php7-xml php7-mysqli php7-imap php7-cgi fcgi php7-pdo php7-pdo_mysql php7-soap php7-xmlrpc php7-posix php7-mcrypt php7-gettext php7-ldap php7-ctype php7-dom
+RUN rc-status && touch /run/openrc/softlevel
+
+RUN cd /www && wget http://wordpress.org/latest.tar.gz &&\
+	tar -xzvf latest.tar.gz && rm latest.tar.gz
+
+RUN /usr/bin/mysql_install_db --user=mysql --datadir=/var/lib/mysql/
+RUN rc-update add mariadb default && rc-update add php-fpm7 default &&\
+	rc-service php-fpm7 start
+
+ADD ./src/data_base.sh /usr/bin/
+# ADD users_data.sql /users_data.sql
+# RUN mysql -u root < users_data.sql
 
 
-ADD ./script.sh /usr/bin/
+RUN rc-service mariadb restart && ./usr/bin/data_base.sh
+RUN cd /www/wordpress/ && rm -rf wp-config.php
+ADD ./src/wp-config-sample.php /www/wordpress/wp-config.php
 
-#VOLUME [ “/sys/fs/cgroup” ]
 
-EXPOSE	443 80
+ADD ./src/script.sh /usr/bin/
+
+EXPOSE	80
 
 ENTRYPOINT /usr/bin/script.sh
-
-
-# install rc-service:
-# apk add openrc --no-cache
-
-#CMD ["nginx", "-g", "daemon off;"]
