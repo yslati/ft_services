@@ -17,7 +17,7 @@ spec:
       - name: phpmyadmin
         image: phpmyadmin
         ports:
-        - containerPort: 5050
+        - containerPort: 5000
         imagePullPolicy: Never
 ---
 apiVersion: v1
@@ -32,6 +32,6 @@ spec:
   ports:
     - protocol: TCP
       name: http
-      port: 5050
-      targetPort: 5050
+      port: 5000
+      targetPort: 5000
   type: LoadBalancer

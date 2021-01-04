@@ -3,35 +3,67 @@ kind: Deployment
 metadata:
   name: mysql
   labels:
-    app: mysql
+    app: wordpress
 spec:
   selector:
     matchLabels:
-      app: mysql
+      app: wordpress
+      tier: mysql
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
-        app: mysql
+        app: wordpress
+        tier: mysql
     spec:
       containers:
-      - name: mysql
-        image: mysql
-        ports:
+        - name: mysql
+          image: mysql
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueForm:
+          secretKeyRef:
+            name: mysql-pass
+            key: password
+      ports:
         - containerPort: 3306
-        imagePullPolicy: Never
+      imagePullPolicy: Never
+      volumeMounts:
+          - name: mysql-persistent-storage
+            mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: PersistentVolumeClaim
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: mysql
+  lables:
+    app: wordpress
   annotations:
     metallb.universe.tf/allow-shared-ip: shared
 spec:
   selector:
-    app: mysql
+    app: wordpress
   ports:
     - protocol: TCP
-      name: ftp
       port: 3306
+      name: mysql
       targetPort: 3306
   type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: PersistentVolumeClaim
+  labels:
+    app: wordpress
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 20Gi
