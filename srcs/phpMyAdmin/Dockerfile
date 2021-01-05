@@ -24,6 +24,7 @@ tar zxvf phpMyAdmin-5.0.4-all-languages.tar.gz && mv phpMyAdmin-5.0.4-all-langua
 rm -rf phpMyAdmin-5.0.4-all-languages.tar.gz
 RUN rc-update add php-fpm7 default && rc-service php-fpm7 restart &> /dev/null
 RUN cd www/phpmyadmin/ && mkdir tmp && chmod 777 tmp
+RUN chown -R www:www /www/phpmyadmin
 ADD ./src/config.sample.inc.php /www/phpmyadmin/config.inc.php 
 
 # ADD ./src/tt.php /www/

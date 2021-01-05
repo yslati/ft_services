@@ -4,13 +4,14 @@ metadata:
   name: wordpress
   labels:
     app: wordpress
+  annotations:
+    metallb.universe.tf/allow-shared-ip: shared
 spec:
   ports:
-    - port: 5050
-      targetPort: 5050
+  - port: 5050
+    targetPort: 5050
   selector:
     app: wordpress
-    tier: frontend
   type: LoadBalancer
 ---
 apiVersion: v1
@@ -24,7 +25,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 20Gi
+      storage: 1Gi
 ---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
@@ -36,21 +37,20 @@ spec:
   selector:
     matchLabels:
       app: wordpress
-      tier: frontend
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
         app: wordpress
-        tier: frontend
     spec:
       containers:
       - image: wordpress
         name: wordpress
+        imagePullPolicy: Never
         env:
         - name: WORDPRESS_DB_HOST
-          value: wordpress-mysql
+          value: mysql
         - name: WORDPRESS_DB_PASSWORD
           valueFrom:
             secretKeyRef:

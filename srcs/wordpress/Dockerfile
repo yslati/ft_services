@@ -31,6 +31,6 @@ ADD ./src/wp-config-sample.php /www/wordpress/wp-config.php
 
 ADD ./src/script.sh /usr/bin/
 
-EXPOSE	5000
+EXPOSE	5050
 
 ENTRYPOINT /usr/bin/script.sh
