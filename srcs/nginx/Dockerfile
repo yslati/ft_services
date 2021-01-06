@@ -17,8 +17,9 @@ RUN ssh-keygen -A
 ADD ./src/script.sh /usr/bin/
 
 
-ADD src/index/Archive.zip /www/
-RUN cd www/ && unzip Archive.zip
+COPY ./src/index /www/index
+RUN chown -R www:www /www/index
+# RUN cd www/ && unzip Archive.zip
 
 
 EXPOSE	443 80 22

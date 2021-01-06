@@ -30,7 +30,7 @@ ADD ./src/config.sample.inc.php /www/phpmyadmin/config.inc.php
 # ADD ./src/tt.php /www/
 ADD ./src/script.sh /usr/bin/
 
-EXPOSE	5050
+EXPOSE	5000
 
 ENTRYPOINT /usr/bin/script.sh
 
