@@ -5,7 +5,6 @@ RUN apk add nginx && mkdir /run/nginx/ &&\
 	adduser -D -g 'www' www &&\
 	mkdir /www && chown -R www:www /var/lib/nginx && chown -R www:www /www
 ADD ./src/nginx.conf /etc/nginx/nginx.conf
-# ADD ./src/index.html /www/index.html
 RUN nginx -t && rc-update add nginx default
 
 # RUN apk add mysql mysql-client
@@ -27,6 +26,7 @@ RUN rc-update add php-fpm7 default && rc-service php-fpm7 start &> /dev/null
 # RUN rc-service mariadb restart && ./usr/bin/data_base.sh
 RUN cd /www/wordpress/ && rm -rf wp-config.php
 ADD ./src/wp-config-sample.php /www/wordpress/wp-config.php
+
 
 
 ADD ./src/script.sh /usr/bin/

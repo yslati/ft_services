@@ -11,3 +11,7 @@ con.connect(function(err) {
   console.log("Connected!");
   
 });
+
+
+// brew install node
+// npm i mysql
