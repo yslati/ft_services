@@ -1,5 +1,8 @@
 FROM	alpine
 
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+RUN apk add telegraf
+RUN mkdir /etc/telegraf
 RUN apk upgrade --available && apk add openrc supervisor
 RUN apk add nginx && mkdir /run/nginx/ &&\
 	adduser -D -g 'www' www &&\

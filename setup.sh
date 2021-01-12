@@ -13,3 +13,15 @@ kubectl create secret generic -n metallb-system memberlist --from-literal=secret
 kubectl apply -f metallb.yaml
 
 kubectl get svc
+
+
+# docker build -t mysql srcs/MySQL
+# docker build -t phpmyadmin srcs/phpmyadmin
+# docker build -t nginx srcs/nginx
+# docker build -t wordpress srcs/wordpress
+# docker build -t ftps srcs/ftps
+
+# kubectl apply -f phpmyadmin.yaml
+# kubectl apply -f mysql.yaml
+# kubectl apply -f wordpress.yaml
+# kubectl apply -f nginx.yaml
