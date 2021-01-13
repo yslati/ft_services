@@ -1,9 +1,8 @@
 FROM	alpine
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-RUN apk add telegraf
+RUN apk upgrade --available && apk add nginx openrc supervisor openssl openssh telegraf
 RUN mkdir /etc/telegraf
-RUN apk upgrade --available && apk add nginx openrc supervisor openssl openssh
 RUN mkdir /run/nginx/ &&\
 	adduser -D -g 'www' www &&\
 	mkdir /www &&\
@@ -18,9 +17,10 @@ ADD ./src/nginx.conf /etc/nginx/nginx.conf
 
 ADD src/supervisord.conf /etc/
 
-
+ADD ./src/telegraf.conf /etc/telegraf/
 COPY ./src/index /www/index
 RUN chown -R www:www /www/index
+
 
 EXPOSE 80 443 22
 

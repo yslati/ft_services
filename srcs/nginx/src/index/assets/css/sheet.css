@@ -1,10 +1,4 @@
-/*
 
-Softy Pinko
-
-https://templatemo.com/tm-535-softy-pinko
-
-*/
 /* ---------------------------------------------
 Table of contents
 ------------------------------------------------
@@ -927,7 +921,7 @@ parallax & home seperator
 }
 
 .mini .mini-content .mini-box:hover {
-  margin-top: -10px;
+  margin-top: -8px;
 }
 
 .mini .mini-content .mini-box:before {
@@ -940,7 +934,7 @@ parallax & home seperator
   height: 100%;
   bottom: -10px;
   left: 0px;
-  right: -20px;
+  right: -0px;
   margin: auto;
   border-radius: 20px;
 }
@@ -956,7 +950,7 @@ parallax & home seperator
   font-weight: 400;
   font-size: 14px;
   color: #777;
-  letter-spacing: .75px;
+  letter-spacing: .70px;
 }
 
 .mini .mini-content .mini-box strong {
@@ -964,7 +958,7 @@ parallax & home seperator
   font-weight: 400;
   font-size: 17px;
   color: #1e1e1e;
-  letter-spacing: 0.25px;
+  letter-spacing: 0.20px;
   margin-bottom: 5px;
   margin-top: 20px;
 }

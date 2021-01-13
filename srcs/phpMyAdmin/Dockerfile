@@ -1,9 +1,8 @@
 FROM	alpine
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-RUN apk add telegraf
+RUN apk upgrade --available && apk add openrc supervisor telegraf
 RUN mkdir /etc/telegraf
-RUN apk upgrade --available && apk add openrc supervisor
 RUN apk add nginx && mkdir /run/nginx/ &&\
 	adduser -D -g 'www' www &&\
 	mkdir /www &&\
@@ -22,6 +21,7 @@ RUN chown -R www:www /www/phpmyadmin
 ADD ./src/config.inc.php /www/phpmyadmin/config.inc.php 
 
 ADD ./src/supervisord.conf /etc/
+ADD ./src/telegraf.conf /etc/telegraf/
 
 EXPOSE	5000
 

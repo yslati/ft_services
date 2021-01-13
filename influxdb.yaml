@@ -10,6 +10,7 @@ spec:
   ports:
     - protocol: TCP
       port: 8086
+      name: influxdb
       targetPort: 8086
   type: ClusterIP
 ---
@@ -50,7 +51,6 @@ spec:
             name: var-lib-influxdb
           ports:
             - containerPort: 8086
-              name: influxdb
       volumes:
       - name: var-lib-influxdb
         persistentVolumeClaim:
