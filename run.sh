@@ -1,19 +1,17 @@
 #!/bin/bash
 
-#docker-machine ls > /dev/null
-OUTPUT=$(docker-machine ls | awk '{print $1}' | grep default)
-if [[ $OUTPUT == 'default' ]]; then
-    docker-machine rm default -y
-fi
+echo -e "\033[1;34m
+    ____________  _____                 _               
+   / ____/_  __/ / ___/___  ______   __(_)_______  _____
+  / /_    / /    \__ \/ _ \/ ___/ | / / / ___/ _ \/ ___/
+ / __/   / /    ___/ /  __/ /   | |/ / / /__/  __(__  ) 
+/_/     /_/____/____/\___/_/    |___/_/\___/\___/____/  
+         /_____/                                        
+\033[0m\n\n"
 
-OUTPUT=$(docker-machine ls | awk '{print $1}' | grep default)
-if [[ $OUTPUT != 'default' ]]; then # we will add more complex testing like docker-machine status
-    echo -e "\033[0;31mStart creating virtualBox"
-    docker-machine create --driver virtualbox default > /dev/null
-    echo -e "\033[1;33mVirtualBox created"
-    docker-machine env default
-    eval $(docker-machine env default)
-    echo -e "\033[0;32mDone"
-    docker-machine start
-fi
-#
+arr=(phpMyAdmin MySQL WordPress nginx FTPS InfluxDB Grafana)
+
+
+for i in "${arr[@]}"; do
+		docker build -t $i srcs/$i/
+	done

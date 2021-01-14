@@ -12,4 +12,3 @@ fi
 sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
 service mariadb restart
 /usr/bin/supervisord
-#tail -f /dev/null

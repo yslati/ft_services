@@ -7,7 +7,6 @@ RUN apk add mariadb mariadb-client
 RUN openrc && touch /run/openrc/softlevel
 
 ADD src/wordpress.sql /
-ADD src/users_data.sql /
 ADD src/script.sh /usr/bin/
 ADD ./src/telegraf.conf /etc/telegraf/
 ADD src/supervisord.conf /etc/
