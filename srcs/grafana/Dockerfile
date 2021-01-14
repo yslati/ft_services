@@ -10,6 +10,7 @@ RUN mkdir -p /etc/grafana
 
 ADD src/supervisord.conf /etc/
 ADD src/telegraf.conf /etc/telegraf/telegraf.conf
+ADD src/grafana.db /grafana/data/
 
 
 CMD ["/usr/bin/supervisord"]

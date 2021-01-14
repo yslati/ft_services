@@ -7,7 +7,7 @@ then
 	echo "GRANT ALL PRIVILEGES on *.* to 'admin'@'%' IDENTIFIED BY 'admin';" | mysql -u root
 	echo "FLUSH PRIVILEGES;" | mysql -u root
 	mysql -u root < wordpress.sql
-	mysql -u root < users_data.sql
+
 fi
 sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
 service mariadb restart
