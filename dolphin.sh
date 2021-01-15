@@ -30,6 +30,7 @@ else
 		mv brew-1.9.0 .brew
 		mv .brew ./goinfre/.brew
 		ln -s ./goinfre/.brew
+		cd -
 		if ls ~/.brew &>/dev/null ; then 
 			echo -e "\n\033[32m-------> brew has been installed successfully \033[0m\n"
 		else
@@ -41,7 +42,9 @@ else
 	fi
 
 ##### install kubectl #####
-	if ! which kubectl &>/dev/null ; then
+	if ! minikube start &>/dev/null ; then
+
+	# if ! which kubectl &>/dev/null ; then
 		echo -e "\n\033[33m-------> kubectl not found :o\033[0m\n"
 		cd ~
 		rm -rf .kube
@@ -49,18 +52,19 @@ else
 		rm -rf .kube
 		mkdir /goinfre/.kube
 		ln -s ./goinfre/.kube
+		cd -
 		if kubectl &>/dev/null ; then
 			echo -e "\n\033[32m-------> kubectl has been installed successfully \033[0m\n"
 		else
 			echo -e "\n\033[31m-------> kubectl has NOT been installed :(  \033[0m\n"
 			exit 1
 		fi
-	else
-		echo -e "\n\033[32m-------> kubectl already installed \033[0m\n"
-	fi
+	# else
+		# echo -e "\n\033[32m-------> kubectl already installed \033[0m\n"
+	# fi
 
 ##### install minikube ##### 
-	if ! which minikube &>/dev/null ; then
+	# if ! which minikube &>/dev/null ; then
 		echo -e "\n\033[33m-------> minikube not found :o\033[0m\n"
 		cd ~
 		rm -rf .minikube
@@ -68,18 +72,19 @@ else
 		rm -rf .minikube
 		mkdir /goinfre/.minikube
 		ln -s ./goinfre/.minikube
+		cd -
 		if minikube &>/dev/null ; then
 			echo -e "\n\033[32m-------> minikube has been installed successfully \033[0m\n"
 		else
 			echo -e "\n\033[31m-------> minikube has NOT been installed :(  \033[0m\n"
 			exit 1
 		fi
-	else
-		echo -e "\n\033[32m-------> minikube already installed \033[0m\n"
-	fi
+	# else
+		# echo -e "\n\033[32m-------> minikube already installed \033[0m\n"
+	# fi
 
 ##### install Docker ##### 
-	if ! which docker &>/dev/null ; then
+	# if ! which docker &>/dev/null ; then
 		echo -e "\n\033[33m-------> Docker not found :o\033[0m\n"
 		cd ~
 		rm -rf .docker
@@ -87,24 +92,30 @@ else
 		rm -rf .docker
 		mkdir /goinfre/.docker
 		ln -s ./goinfre/.docker
+		cd -
 		if docker &>/dev/null ; then
 			echo -e "\n\033[32m-------> Docker has been installed successfully \033[0m\n"
 		else
 			echo -e "\n\033[31m-------> Docker has NOT been installed :(  \033[0m\n"
 			exit 1
 		fi
+	# else
+		# echo -e "\n\033[32m-------> Docker already installed \033[0m\n"
+	# fi
 	else
+		echo -e "\n\033[32m-------> kubectl already installed \033[0m\n"
+		echo -e "\n\033[32m-------> minikube already installed \033[0m\n"
 		echo -e "\n\033[32m-------> Docker already installed \033[0m\n"
 	fi
 
 ##### Delete Old minikube VM #####
 	echo -e "\033[1;33m######## Delete Old minikube VM ########\033[0m"
-	# minikube delete
+	minikube delete
 	echo -e "\033[1;32m######## minikube VM Deleted ########\033[0m\n"
 
 ##### Start New minikube VM #####
 	echo -e "\033[1;33m######## Start New minikube VM ########\033[0m"
-	# minikube start --vm-driver=virtualbox --memory=4g --disk-size=20g --cpus=4
+	minikube start --vm-driver=virtualbox --memory=4g --disk-size=20g --cpus=4
 	echo -e "\033[1;32m######## minikube VM started ########\033[0m\n"
 
 ##### Setup LoadBalancer (metallb) #####
@@ -129,6 +140,7 @@ else
 	echo -e "\033[1;33m######## apply Deployment & Services ########\033[0m"
 	for i in "${arr[@]}"; do
 		kubectl apply -f $i.yaml
+		sleep 2
 	done
 	# echo -e "\033[1;32m######## DONE ########\033[0m"
 

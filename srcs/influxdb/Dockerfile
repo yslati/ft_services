@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.12.3
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 RUN apk add influxdb openrc telegraf supervisor
