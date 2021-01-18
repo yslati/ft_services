@@ -1,7 +1,5 @@
 #!/bin/bash
 
-arr=(phpmyadmin mysql wordpress nginx ftps influxdb grafana)
-
 echo -e "\033[1;34m
     ____________  _____                 _               
    / ____/_  __/ / ___/___  ______   __(_)_______  _____
@@ -9,13 +7,65 @@ echo -e "\033[1;34m
  / __/   / /    ___/ /  __/ /   | |/ / / /__/  __(__  ) 
 /_/     /_/____/____/\___/_/    |___/_/\___/\___/____/  
          /_____/                                        
-\033[0m"
+\033[0m\n"
 
-if [[ $1 == "delete" ]]
-then
+
+arr=(phpmyadmin mysql wordpress nginx ftps influxdb grafana)
+MINIKUBE_IP=`minikube ip`
+SERVICE_IP=`kubectl get svc | grep nginx | awk '{print $4}'`
+SSH_USERNAME="admin";	SSH_PASSWORD="admin"
+FTPS_USERNAME="admin";	FTPS_PASSWORD="admin"
+DB_USER="admin";		DB_PASSWORD="admin"
+
+function show_info() {
+    echo -e "\033[0;32m	✅ft_services deployment done (Hourra !)\033[0m"
+    echo -e "\033[1;32m
+    Minikube IP is : $MINIKUBE_IP
+    =========================================================================
+    WEB_Server:
+        nginx:			https://$SERVICE_IP (or http)
+        wordpress:		http://$SERVICE_IP:5050
+        phpmyadmin:		http://$SERVICE_IP:5000
+        grafana:		http://$SERVICE_IP:3000
+
+    Protocols:
+        SSH:			ssh admin@$SERVICE_IP -p 22
+        FTPS:			use FILEZILLA
+        
+    DATA_BASES:			(username:password)
+        ssh:			$SSH_USERNAME:$SSH_PASSWORD	(port 22)
+        ftps:			$FTPS_USERNAME:$FTPS_PASSWORD	(port 21)
+        database:		$DB_USER:$DB_PASSWORD	(sql / phpmyadmin)
+        grafana:		admin:admin	(default)
+        wordpress:              yassin:yassin	(admin)
+
+    \033[0m"
+}
+function instruction() {
+    echo -e "\033[0;32m	========= Instructions ===========================\033[0m"
+	echo -e "\033[1;33m 
+	delete	:	delete all deployment and Services.
+	apply	:	apply all deploymrnt and Services.
+	show	:	show services IP and logins info.
+	\033[0m\n"
+}
+
+if [[ $1 == "delete" ]]; then
 	for i in "${arr[@]}"; do
 		kubectl delete -f srcs/$i.yaml
 	done
+
+elif [[ $1 == "apply" ]]; then
+	for i in "${arr[@]}"; do
+		kubectl apply -f srcs/$i.yaml
+	done
+
+elif [[ $1 == "show" ]]; then
+	show_info
+
+elif [[ $1 == "help" ]]; then
+	instruction
+
 else
 ##### install brew #####
 	if ! which brew &>/dev/null ; then
