@@ -13,14 +13,12 @@ RUN rc-status && mkdir /run/openrc/softlevel
 RUN adduser -D admin
 RUN echo "admin:admin"|chpasswd
 RUN ssh-keygen -A
+
 ADD ./src/nginx.conf /etc/nginx/nginx.conf
-
 ADD src/supervisord.conf /etc/
-
 ADD ./src/telegraf.conf /etc/telegraf/
 COPY ./src/index /www/index
 RUN chown -R www:www /www/index
-
 
 EXPOSE 80 443 22
 
