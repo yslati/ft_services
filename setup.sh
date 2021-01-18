@@ -10,7 +10,7 @@ echo -e "\033[1;34m
 \033[0m\n"
 
 
-arr=(phpmyadmin mysql wordpress nginx ftps influxdb grafana)
+svc=(phpmyadmin mysql wordpress nginx ftps influxdb grafana)
 MINIKUBE_IP=`minikube ip`
 SERVICE_IP=`kubectl get svc | grep nginx | awk '{print $4}'`
 SSH_USERNAME="admin";	SSH_PASSWORD="admin"
@@ -51,12 +51,12 @@ function instruction() {
 }
 
 if [[ $1 == "delete" ]]; then
-	for i in "${arr[@]}"; do
+	for i in "${svc[@]}"; do
 		kubectl delete -f srcs/$i.yaml
 	done
 
 elif [[ $1 == "apply" ]]; then
-	for i in "${arr[@]}"; do
+	for i in "${svc[@]}"; do
 		kubectl apply -f srcs/$i.yaml
 	done
 
@@ -176,14 +176,14 @@ else
 
 ##### Build Docker images #####
 	echo -e "\033[1;33m######## Build Docker images ########\033[0m"
-	for i in "${arr[@]}"; do
+	for i in "${svc[@]}"; do
 		docker build -t $i srcs/$i
 	done
 	echo -e "\033[1;32m######## Docker images builded ########\033[0m\n"
 
 ##### Apply Deployment & Services #####
 	echo -e "\033[1;33m######## apply Deployment & Services ########\033[0m"
-	for i in "${arr[@]}"; do
+	for i in "${svc[@]}"; do
 		kubectl apply -f srcs/$i.yaml
 		sleep 2
 	done
