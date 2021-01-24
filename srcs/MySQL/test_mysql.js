@@ -9,15 +9,15 @@
 
 
 const mysql = require('mysql');
-  2
-  3 var con = mysql.createConnection({
-  4   host: "machine_IP",
-  5   user: "Mysql_username",
-  6   password: "MySQL_Password"
-  7 });
-  8
-  9 con.connect(function(err) {
- 10   if (err) throw err;
- 11   console.log("Connected!");
- 12
- 13 });
+
+var con = mysql.createConnection({
+  host: "machine_IP",
+  user: "Mysql_username",
+  password: "MySQL_Password"
+});
+
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+
+});

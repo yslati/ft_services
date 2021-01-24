@@ -68,7 +68,7 @@ elif [[ $1 == "help" ]]; then
 
 else
 ##### install brew #####
-	if ! which brew &>/dev/null ; then
+	if ! brew &>/dev/null ; then
 		echo -e "\n\033[33m-------> brew not found :o\033[0m\n"
 		cd ~
 		rm -rf .brew
